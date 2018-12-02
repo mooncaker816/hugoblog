@@ -19,7 +19,7 @@ https://qimin.me {
         rotate_compress # Compress rotated log files in gzip format
     }
     git {
-        repo git@github.com:mooncaker816/hugosite.git
+        repo git@github.com:mooncaker816/hugoblog.git
         key /home/.ssh/id_rsa
         path /home/qimin.me
         then rm -rf /home/qimin.me/public/*
