@@ -1,0 +1,111 @@
+{{ partial "header.html" . }}
+{{ partial "navbar.html" . }}
+
+{{ $headers := findRE "<h[1-6].*?>(.|\n])+?</h[1-6]>" .Content }}
+{{/*这里对h标签的id 进行了处理，防止中文标题 toc 滚动自适应失效*/}}
+{{ $.Scratch.Set "cc" (htmlUnescape .Content | string) }}
+
+{{ $has_headers := ge (len $headers) 1 }}
+{{ if $has_headers }}
+    {{ range $i, $header := $headers }}
+        {{ $innercc := $.Scratch.Get "cc" }}
+        {{ $o_hash := index (findRE "id=.([^\"]+)." $header 1) 0 }}
+        {{ $tmp_hash := $o_hash }}    
+        {{ $o_hid := replace $tmp_hash "id=\"" "" }}
+        {{ $o_hid := replace $o_hid "\"" "" }}
+        {{ $n_hash := printf "id=%s" (md5 $o_hid) }}        
+        {{ $n_header := replace $header $o_hash $n_hash }}    
+        {{ $innercc := replace $innercc $header $n_header}}
+        {{ $.Scratch.Set "cc" $innercc }}
+    {{ end }}
+{{ end }}
+
+<div class="container-fluid docs">
+  <div class="row flex-xl-nowrap">
+
+    <div class="col-12 col-md-3 col-xl-1">
+     
+    </div>
+    <div class="d-none d-xl-block col-xl-3 docs-toc">
+        <nav id="tocpost-subnavbar" class="affix">
+            {{ partial "toc" . }}
+            <ul class="nav article-toc-top">
+              <li><a href="#">回到顶部</a></li>
+            </ul>
+
+            <!-- <div class="connect-widget">
+              <ul class="connect-links fa-ul">
+                <li><i class="fa-li fa fa-question-circle"></i><a href="http://discuss.gohugo.io" target="_blank">Ask questions</a></li>
+                <li><i class="fa-li fa fa-comments-o"></i><a href="https://github.com/gcushen/hugo-academic/issues" target="_blank">Request features</a></li>
+                <li><i class="fa-li fa fa-bug"></i><a href="https://github.com/gcushen/hugo-academic/issues" target="_blank">Report issues</a></li>
+              </ul>
+            </div> -->
+          </nav>
+      <!-- {{ with (i18n "on_this_page") }}
+      <p class="docs-toc-title">{{.}}</p>
+      {{ end }}
+
+      {{ .TableOfContents }}
+
+      <ul class="nav toc-top">
+        <li><a href="#">{{ i18n "back_to_top" | default "Back to top" }}</a></li>
+      </ul>
+
+      {{ partial "docs_toc_foot.html" . }} -->
+    </div>
+      <!-- <div class="hidden-xs col-sm-3 col-md-2">
+          <nav id="tocpost-subnavbar" class="affix">
+            {{ partial "toc" . }}
+            <ul class="nav article-toc-top">
+              <li><a href="#">回到顶部</a></li>
+            </ul>
+          </nav>
+      </div> -->
+      <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 docs-content" role="main">
+          <article class="article" itemscope itemtype="http://schema.org/Article">
+
+            {{ partial "page_header.html" . }}
+
+            <div class="article-container">
+
+              <div class="article-style" itemprop="articleBody">
+                {{ $.Scratch.Get "cc" | safeHTML }}
+              </div>
+
+              {{ partial "tags.html" . }}
+
+              {{ $related := .Site.RegularPages.Related . | first 5 }}
+              {{ with $related }}
+              <div class="article-widget">
+                <div class="hr-light"></div>
+                <h3>{{ i18n "related" }}</h3>
+                <ul>
+                  {{ range . }}
+                  <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+                  {{ end }}
+                </ul>
+              </div>
+              {{ end }}
+
+              {{ if .Site.Params.section_pager }}
+              <div class="article-widget">
+                {{ partial "section_pager.html" . }}
+              </div>
+              {{ end }}
+
+              <div class="body-footer">
+                  {{ i18n "last_updated" }} {{ $.Lastmod.Format $.Site.Params.date_format }}
+              </div>
+              
+              {{ partial "comments.html" . }}
+
+            </div>
+
+          </article>
+    </main>
+
+  </div>
+</div>
+
+{{ partial "footer_container.html" . }}
+{{ partial "footer.html" . }}
