@@ -26,41 +26,6 @@
     <div class="col-12 col-md-3 col-xl-1">
      
     </div>
-    <div class="d-none d-xl-block col-xl-3 docs-toc">
-        <nav id="tocpost-subnavbar" class="affix">
-            {{ partial "toc" . }}
-            <ul class="nav article-toc-top">
-              <li><a href="#">回到顶部</a></li>
-            </ul>
-
-            <!-- <div class="connect-widget">
-              <ul class="connect-links fa-ul">
-                <li><i class="fa-li fa fa-question-circle"></i><a href="http://discuss.gohugo.io" target="_blank">Ask questions</a></li>
-                <li><i class="fa-li fa fa-comments-o"></i><a href="https://github.com/gcushen/hugo-academic/issues" target="_blank">Request features</a></li>
-                <li><i class="fa-li fa fa-bug"></i><a href="https://github.com/gcushen/hugo-academic/issues" target="_blank">Report issues</a></li>
-              </ul>
-            </div> -->
-          </nav>
-      <!-- {{ with (i18n "on_this_page") }}
-      <p class="docs-toc-title">{{.}}</p>
-      {{ end }}
-
-      {{ .TableOfContents }}
-
-      <ul class="nav toc-top">
-        <li><a href="#">{{ i18n "back_to_top" | default "Back to top" }}</a></li>
-      </ul>
-
-      {{ partial "docs_toc_foot.html" . }} -->
-    </div>
-      <!-- <div class="hidden-xs col-sm-3 col-md-2">
-          <nav id="tocpost-subnavbar" class="affix">
-            {{ partial "toc" . }}
-            <ul class="nav article-toc-top">
-              <li><a href="#">回到顶部</a></li>
-            </ul>
-          </nav>
-      </div> -->
       <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 docs-content" role="main">
           <article class="article" itemscope itemtype="http://schema.org/Article">
 
@@ -103,7 +68,14 @@
 
           </article>
     </main>
-
+    <div class="d-none d-xl-block col-xl-3 docs-toc">
+        <nav id="tocpost-subnavbar" class="affix">
+            {{ partial "toc" . }}
+            <ul class="nav article-toc-top">
+              <li><a href="#">回到顶部</a></li>
+            </ul>
+          </nav>
+    </div>
   </div>
 </div>
 
